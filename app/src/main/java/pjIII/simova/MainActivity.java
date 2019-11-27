@@ -3,10 +3,12 @@ package pjIII.simova;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText senha;
     private String username;
     private String password;
-    //public static String ip = "192.168.0.14";
-    //public static String ip = "10.206.1.131";
-    public static String ip = "ubuntu@ec2-18-218-125-147.us-east-2.compute.amazonaws.com";
+    public static String ip = "35.247.234.136/hometasks/api/v1";
     private String baseUrl;
     private ProgressBar progressBar;
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Replace this with your own IP address or URL.
         baseUrl = "http://".concat(ip);
-        baseUrl = baseUrl.concat(":5000/usuario/login");
+        baseUrl = baseUrl.concat("/login");
 
         email = (EditText) findViewById(R.id.email);
         senha = (EditText) findViewById(R.id.senha);
@@ -55,15 +55,10 @@ public class MainActivity extends AppCompatActivity {
                     username = email.getText().toString();
                     password = senha.getText().toString();
 
-                    ApiAuthenticationClient apiAuthenticationClient =
-                            new ApiAuthenticationClient(
-                                    baseUrl
-                                    , username
-                                    , password
-                                    , "POST"
-                            );
 
-                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(apiAuthenticationClient);
+                    Service service = new Service();
+
+                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(service);
                     execute.execute();
                 } catch (Exception ex) {
                 }
@@ -99,27 +94,26 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open a new activity window.
      */
-    private void goToUserActivity() {
-        Intent intent = new Intent(this, UserActivity.class);
+    private void goToTasksActivity() {
+        Intent intent = new Intent(this, TasksActivity.class);
         startActivity(intent);
     }
 
     public class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
 
-        private ApiAuthenticationClient apiAuthenticationClient;
+        private Service service;
         private String isValidCredentials;
-
         /**
          * Overload the constructor to pass objects to this class.
          */
-        public ExecuteNetworkOperation(ApiAuthenticationClient apiAuthenticationClient) {
-            this.apiAuthenticationClient = apiAuthenticationClient;
+        public ExecuteNetworkOperation(Service service) {
+            this.service = service;
         }
 
         @Override
         protected String doInBackground(Void... params) {
             try {
-                isValidCredentials = apiAuthenticationClient.execute();
+                isValidCredentials = service.authUser(username, password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,21 +127,14 @@ public class MainActivity extends AppCompatActivity {
             // Login Success
             if (isValidCredentials == "true"){
                 progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Bem vindo, "+ User.getNome() , Toast.LENGTH_LONG).show();
-                goToUserActivity();
-            } else if (isValidCredentials == "admin") {
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "O aplicativo não é destinado para administradores", Toast.LENGTH_LONG).show();
-            } else if (isValidCredentials == "invalid") {
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Login Inválido", Toast.LENGTH_LONG).show();
-            } else if (isValidCredentials == "semVaga") {
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Usuário não possui vagas para monitorar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
+                //goToTasksActivity();
             }else {// Login Failure
                 progressBar.setVisibility(GONE);
                 Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
             }
         }
+
+
     }
 }

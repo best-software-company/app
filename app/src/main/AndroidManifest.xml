@@ -19,9 +19,6 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".AboutActivity"></activity>
         <activity
-            android:name=".SettingsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".UserActivity2"
             android:screenOrientation="portrait" />
         <activity
