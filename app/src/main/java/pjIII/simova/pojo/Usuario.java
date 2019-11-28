@@ -14,6 +14,7 @@ public class Usuario {
 	private String email;
 	private String perfil;
 	private int idCasa;
+	public static String token;
 	private Blob foto;
 
 	public Usuario() {

@@ -15,6 +15,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+
+import pjIII.simova.pojo.Tarefa;
+import pjIII.simova.pojo.Usuario;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -34,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // TODO: Replace this with your own IP address or URL.
-        baseUrl = "http://".concat(ip);
-        baseUrl = baseUrl.concat("/login");
 
         email = (EditText) findViewById(R.id.email);
         senha = (EditText) findViewById(R.id.senha);
@@ -129,7 +133,13 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             try {
                 isValidCredentials = service.authUser(username, password);
-            } catch (Exception e) {
+                Usuario usuario = new Usuario("String idUsuario", "String nome", "1909-02-02",
+                        "String genero", 0, "String telefone",
+                        "String senha", "String email", "String perfil", 0, null);
+                service.registerUser(usuario);
+                Tarefa tarefa = new Tarefa("String nome", "String descricao", "luluzinha", "Roque1", "aberta", "1902-02-02", 0);
+                service.registrarTarefa(tarefa);
+                } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -149,7 +159,5 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
             }
         }
-
-
     }
 }
