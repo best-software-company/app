@@ -53,26 +53,35 @@ public class Service{
         return null;
     }
 
+    private HttpURLConnection prepareCon(String path, String method){
+        try{
+            String urlString = baseUrl.concat(path);
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-type", "application/json");
+            if(token !=null)
+                connection.setRequestProperty("token", token);
+            connection.setRequestMethod(method);
+            connection.setConnectTimeout(5000);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            return connection;
+        }catch (Exception e){}
+
+        return null;
+    }
+
     public String authUser(String idUsuario, String senha) {
         try {
-            String urlString = baseUrl.concat("login/");
+            String urlString = "login/";
 
             //TODO pass login info to http body
             urlString = urlString.concat(idUsuario);
             urlString = urlString.concat(":");
             urlString = urlString.concat(senha);
 
-            URL url = new URL(urlString);
-
-            Log.i("URL", String.valueOf(url));
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-type", "application/json");
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(5000);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+            HttpURLConnection connection = prepareCon(urlString,"POST");
 
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("idUsuario", idUsuario);
@@ -110,19 +119,7 @@ public class Service{
 
     public String registerUser(Usuario usuario) {
         try {
-            String urlString = baseUrl.concat("users/");
-
-            URL url = new URL(urlString);
-
-            Log.i("URL", String.valueOf(url));
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-type", "application/json");
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(5000);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+            HttpURLConnection connection = prepareCon("users/","POST");
 
             Gson gson = new Gson();
             String usuarioString = gson.toJson(usuario);
@@ -157,20 +154,8 @@ public class Service{
 
     public String registrarTarefa(Tarefa tarefa) {
         try {
-            String urlString = baseUrl.concat("tasks/");
 
-            URL url = new URL(urlString);
-
-            Log.i("URL", String.valueOf(url));
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-type", "application/json");
-            connection.setRequestProperty("token", token);
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(5000);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+            HttpURLConnection connection = prepareCon("tasks/","POST");
 
             Gson gson = new Gson();
             String usuarioString = gson.toJson(tarefa);
@@ -201,4 +186,68 @@ public class Service{
         }
         return "false";
     }
+
+
+    public String buscarTarefas(Tarefa tarefa) {
+        try {
+
+            HttpURLConnection connection = prepareCon("tasks/","POST");
+
+            Gson gson = new Gson();
+            String usuarioString = gson.toJson(tarefa);
+
+            Log.i("JSON", usuarioString);
+
+            DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+            os.writeBytes(usuarioString);
+
+            os.flush();
+            os.close();
+
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 201) {
+                return "true";
+            }
+            if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
+                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                return jsonObject.getString("error");
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+
+
+    public String buscarUsuario(String login) {
+        try {
+
+            String path = "users/".concat(login);
+            HttpURLConnection connection = prepareCon(path,"GET");
+
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 200) {
+                return "true";
+            }
+            if (connection.getResponseCode() == 404) {
+                JSONObject jsonObject = this.getJson(connection.getInputStream());
+
+                return jsonObject.getString("error");
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+
 }
