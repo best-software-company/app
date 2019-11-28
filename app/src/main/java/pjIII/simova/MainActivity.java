@@ -21,7 +21,7 @@ import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button button_login;
+    private Button button_login, button_registro;
     private EditText email;
     private EditText senha;
     private String username;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         senha = (EditText) findViewById(R.id.senha);
         button_login = (Button) findViewById(R.id.button);
+        button_registro = (Button) findViewById(R.id.button2);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(GONE);
 
@@ -62,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
                     execute.execute();
                 } catch (Exception ex) {
                 }
+            }
+        });
+
+        button_registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRegisterActivity();
             }
         });
     }
@@ -96,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private void goToTasksActivity() {
         Intent intent = new Intent(this, TasksActivity.class);
+        startActivity(intent);
+    }
+    /**
+     * Open a new activity window.
+     */
+    private void goToRegisterActivity() {
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
