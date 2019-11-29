@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_tasks"
+        android:name="pjIII.simova.ui.tasks.ShareFragment"
+        android:label="@string/menu_tasks"
+        tools:layout="@layout/fragment_share" />
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="pjIII.simova.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="pjIII.simova.ui.profile.GalleryFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_payments"
+        android:name="pjIII.simova.ui.payments.PaymentsFragment"
+        android:label="@string/menu_payments"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_routines"
+        android:name="pjIII.simova.ui.routines.ToolsFragment"
+        android:label="@string/menu_routines"
+        tools:layout="@layout/fragment_tools" />
+
+    <fragment
+        android:id="@+id/nav_rules"
+        android:name="pjIII.simova.ui.rules.SendFragment"
+        android:label="@string/menu_rules"
+        tools:layout="@layout/fragment_send" />
+</navigation>

@@ -17,15 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AboutActivity"></activity>
-        <activity
-            android:name=".UserActivity2"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:label="@string/title_activity_perfil"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".PresentationActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
