@@ -103,7 +103,7 @@ public class PresentationActivity extends AppCompatActivity {
      * Open a new activity window.
      */
     private void goToRegisterActivity() {
-        Intent intent = new Intent(this, RegisterActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -130,7 +130,7 @@ public class PresentationActivity extends AppCompatActivity {
                 isValidCredentials = service.authUser(username, password);
                 Usuario usuario = new Usuario("String idUsuario", "String nome", "1909-02-02",
                         "String genero", 0, "String telefone",
-                        "String senha", "String email", "String perfil", 0, null);
+                        "String senha", "String email", "String main", 0, null);
                 service.registerUser(usuario);
                 Tarefa tarefa = new Tarefa("String nome", "String descricao", "luluzinha", "Roque1", "aberta", "1902-02-02", 0);
                 service.registrarTarefa(tarefa);

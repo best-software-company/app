@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_tasks">
 
     <fragment
         android:id="@+id/nav_tasks"
-        android:name="pjIII.simova.ui.tasks.ShareFragment"
+        android:name="pjIII.simova.ui.tasks.TasksFragment"
         android:label="@string/menu_tasks"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_tasks" />
 
     <fragment
         android:id="@+id/nav_home"
@@ -19,25 +19,25 @@
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="pjIII.simova.ui.profile.GalleryFragment"
+        android:name="pjIII.simova.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_payments"
         android:name="pjIII.simova.ui.payments.PaymentsFragment"
         android:label="@string/menu_payments"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_payments" />
 
     <fragment
         android:id="@+id/nav_routines"
-        android:name="pjIII.simova.ui.routines.ToolsFragment"
+        android:name="pjIII.simova.ui.routines.RoutinesFragment"
         android:label="@string/menu_routines"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_routines" />
 
     <fragment
         android:id="@+id/nav_rules"
-        android:name="pjIII.simova.ui.rules.SendFragment"
+        android:name="pjIII.simova.ui.rules.RulesFragment"
         android:label="@string/menu_rules"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_rules" />
 </navigation>

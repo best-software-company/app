@@ -1,5 +1,9 @@
 package pjIII.simova;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -9,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import android.util.Base64;
 import java.util.Scanner;
 
 import pjIII.simova.pojo.Tarefa;
@@ -76,24 +81,13 @@ public class Service{
         try {
             String urlString = "login/";
 
-            //TODO pass login info to http body
-            urlString = urlString.concat(idUsuario);
-            urlString = urlString.concat(":");
-            urlString = urlString.concat(senha);
+            String credential = idUsuario.concat(":");
+            credential = credential.concat(senha);
 
             HttpURLConnection connection = prepareCon(urlString,"POST");
 
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("idUsuario", idUsuario);
-            jsonParam.put("senha", senha);
-
-            Log.i("JSON", jsonParam.toString());
-
-            DataOutputStream os = new DataOutputStream(connection.getOutputStream());
-            os.writeBytes(jsonParam.toString());
-
-            os.flush();
-            os.close();
+            String encode = Base64.encodeToString(credential.getBytes(),Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization","Basic "+ encode);
 
             connection.connect();
 

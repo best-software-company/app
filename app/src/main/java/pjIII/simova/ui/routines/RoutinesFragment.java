@@ -1,4 +1,4 @@
-package pjIII.simova.ui.profile;
+package pjIII.simova.ui.routines;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import pjIII.simova.R;
 
-public class GalleryFragment extends Fragment {
+public class RoutinesFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private RoutinesViewModel routinesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
+        routinesViewModel =
+                ViewModelProviders.of(this).get(RoutinesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_routines, container, false);
+        final TextView textView = root.findViewById(R.id.text_tools);
+        routinesViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

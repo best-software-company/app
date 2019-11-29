@@ -145,7 +145,7 @@ public class Usuario {
 				", telefone='" + telefone + '\'' +
 				", senha='" + senha + '\'' +
 				", email='" + email + '\'' +
-				", perfil='" + perfil + '\'' +
+				", main='" + perfil + '\'' +
 				", idCasa=" + idCasa +
 				", foto=" + foto +
 				'}';

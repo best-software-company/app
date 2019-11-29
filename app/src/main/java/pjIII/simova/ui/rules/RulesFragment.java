@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import pjIII.simova.R;
 
-public class SendFragment extends Fragment {
+public class RulesFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private RulesViewModel rulesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        rulesViewModel =
+                ViewModelProviders.of(this).get(RulesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_rules, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
+        rulesViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
