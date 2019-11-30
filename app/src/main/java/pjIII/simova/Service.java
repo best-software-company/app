@@ -34,7 +34,7 @@ public class Service{
      * @return String
      */
 
-    private JSONObject getJson(InputStream inputStream){
+    private String getJson(InputStream inputStream){
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
             Scanner scanner = new Scanner(inputStreamReader);
@@ -43,8 +43,7 @@ public class Service{
                 stringBuffer.append(scanner.nextLine());
             }
             System.out.println("STRING BUFFER >>>>>>>" +stringBuffer);
-            JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-            return jsonObject;
+            return stringBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,8 +61,9 @@ public class Service{
                 connection.setRequestProperty("token", token);
             connection.setRequestMethod(method);
             connection.setConnectTimeout(5000);
+            if (method != "GET")
+                connection.setDoOutput(true);
             connection.setDoInput(true);
-            connection.setDoOutput(true);
             return connection;
         }catch (Exception e){}
 
@@ -87,17 +87,18 @@ public class Service{
             Log.i("STATUS", String.valueOf(connection.getResponseCode()));
             Log.i("MSG", connection.getResponseMessage());
 
+            connection.disconnect();
+
             if (connection.getResponseCode() == 200) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 token = jsonObject.getString("token");
                 Log.i("TOKEN", token);
                 return "true";
             }
             if (connection.getResponseCode() == 401 || connection.getResponseCode() == 403) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 return jsonObject.getString("error");
             }
-            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +129,7 @@ public class Service{
                 return "true";
             }
             if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 return jsonObject.getString("error");
             }
             connection.disconnect();
@@ -164,7 +165,7 @@ public class Service{
                 return "true";
             }
             if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 return jsonObject.getString("error");
             }
             connection.disconnect();
@@ -200,7 +201,7 @@ public class Service{
                 return "true";
             }
             if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 return jsonObject.getString("error");
             }
             connection.disconnect();
@@ -211,7 +212,7 @@ public class Service{
     }
 
 
-    public String getUsers(String login) {
+    public Usuario[] getUsers(String login) {
         try {
 
             String path = "users/".concat(login);
@@ -223,18 +224,19 @@ public class Service{
             Log.i("MSG", connection.getResponseMessage());
 
             if (connection.getResponseCode() == 200) {
-                return "true";
+                Gson gson = new Gson();
+                Usuario[] usuarios = gson.fromJson(getJson(connection.getInputStream()), Usuario[].class);
+                return usuarios;
+
             }
             if (connection.getResponseCode() == 404) {
-                JSONObject jsonObject = this.getJson(connection.getInputStream());
-
-                return jsonObject.getString("error");
+                return null;
             }
             connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "false";
+        return null;
     }
 
 }

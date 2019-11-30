@@ -13,9 +13,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import pjIII.simova.pojo.Tarefa;
-import pjIII.simova.pojo.Usuario;
-
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -53,11 +50,35 @@ public class PresentationActivity extends AppCompatActivity {
                     username = email.getText().toString();
                     password = senha.getText().toString();
 
+                    AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+                        @Override
+                        protected String doInBackground(Void... voids) {
+                            Service service1 = new Service();
+                            String result = service1.authUser(username,password);
+                            return result;
+                        }
+                        @Override
+                        protected void onPostExecute(String result){
+                            super.onPostExecute(result);
+                            if (result == "true"){
+                                progressBar.setVisibility(GONE);
+                                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
+                                goToMainActivity();
+                            }
+                            else if(result == "false"){
+                                progressBar.setVisibility(GONE);
+                                Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                progressBar.setVisibility(GONE);
+                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                            }
+                        }
 
-                    Service service = new Service();
+                    };
 
-                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(service);
-                    execute.execute();
+                    task.execute();
+
                 } catch (Exception ex) {
                 }
             }
@@ -96,12 +117,6 @@ public class PresentationActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Open a new activity window.
-     */
-    /**
-     * Open a new activity window.
-     */
     private void goToRegisterActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -112,47 +127,4 @@ public class PresentationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    public class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
-
-        private Service service;
-        private String response;
-        /**
-         * Overload the constructor to pass objects to this class.
-         */
-        public ExecuteNetworkOperation(Service service) {
-            this.service = service;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                response = service.authUser(username, password);
-                Usuario usuario = new Usuario("String idUsuario", "String nome", "1909-02-02",
-                        "String genero", 0, "String telefone",
-                        "String senha", "String email", "String main", 0, null);
-                service.registerUser(usuario);
-                Tarefa tarefa = new Tarefa("String nome", "String descricao", "luluzinha", "Roque1", "aberta", "1902-02-02", 0);
-                service.registerTask(tarefa);
-                } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
-            // Login Success
-            if (response == "true"){
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
-                goToMainActivity();
-            }else {// Login Failure
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 }
