@@ -1,13 +1,7 @@
 package pjIII.simova;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
-
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import android.util.Base64;
 import java.util.Scanner;
-
 import pjIII.simova.pojo.Tarefa;
 import pjIII.simova.pojo.Usuario;
 
@@ -146,7 +139,7 @@ public class Service{
     }
 
 
-    public String registrarTarefa(Tarefa tarefa) {
+    public String registerTask(Tarefa tarefa) {
         try {
 
             HttpURLConnection connection = prepareCon("tasks/","POST");
@@ -182,7 +175,7 @@ public class Service{
     }
 
 
-    public String buscarTarefas(Tarefa tarefa) {
+    public String getTasks(Tarefa tarefa) {
         try {
 
             HttpURLConnection connection = prepareCon("tasks/","POST");
@@ -218,7 +211,7 @@ public class Service{
     }
 
 
-    public String buscarUsuario(String login) {
+    public String getUsers(String login) {
         try {
 
             String path = "users/".concat(login);

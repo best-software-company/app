@@ -34,9 +34,9 @@ public class PresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_presentation);
 
-        email = (EditText) findViewById(R.id.email);
+        email = (EditText) findViewById(R.id.login);
         senha = (EditText) findViewById(R.id.senha);
         button_login = (Button) findViewById(R.id.button);
         button_registro = (Button) findViewById(R.id.button2);
@@ -116,7 +116,7 @@ public class PresentationActivity extends AppCompatActivity {
     public class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
 
         private Service service;
-        private String isValidCredentials;
+        private String response;
         /**
          * Overload the constructor to pass objects to this class.
          */
@@ -127,13 +127,13 @@ public class PresentationActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params) {
             try {
-                isValidCredentials = service.authUser(username, password);
+                response = service.authUser(username, password);
                 Usuario usuario = new Usuario("String idUsuario", "String nome", "1909-02-02",
                         "String genero", 0, "String telefone",
                         "String senha", "String email", "String main", 0, null);
                 service.registerUser(usuario);
                 Tarefa tarefa = new Tarefa("String nome", "String descricao", "luluzinha", "Roque1", "aberta", "1902-02-02", 0);
-                service.registrarTarefa(tarefa);
+                service.registerTask(tarefa);
                 } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -145,13 +145,13 @@ public class PresentationActivity extends AppCompatActivity {
         protected void onPostExecute(String result){
             super.onPostExecute(result);
             // Login Success
-            if (isValidCredentials == "true"){
+            if (response == "true"){
                 progressBar.setVisibility(GONE);
                 Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
                 goToMainActivity();
             }else {// Login Failure
                 progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
             }
         }
     }
