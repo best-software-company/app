@@ -9,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import android.util.Base64;
 import java.util.Scanner;
+
+import pjIII.simova.pojo.Casa;
 import pjIII.simova.pojo.Tarefa;
 import pjIII.simova.pojo.Usuario;
 
@@ -239,4 +241,36 @@ public class Service{
         return null;
     }
 
+
+    public Casa[] getHouses(String name) {
+        try {
+
+            String path = "home/".concat(name);
+            HttpURLConnection connection = prepareCon(path,"GET");
+
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 200) {
+                Gson gson = new Gson();
+                Casa[] houses = gson.fromJson(getJson(connection.getInputStream()), Casa[].class);
+                return houses;
+
+            }
+            if (connection.getResponseCode() == 404) {
+                return null;
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public boolean getUser() {
+        return true;
+    }
 }

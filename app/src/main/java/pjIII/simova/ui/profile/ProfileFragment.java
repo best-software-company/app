@@ -7,14 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import pjIII.simova.R;
 import pjIII.simova.Service;
@@ -22,13 +23,22 @@ import pjIII.simova.pojo.Usuario;
 
 public class ProfileFragment extends Fragment {
 
-    private ProfileViewModel profileViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        profileViewModel =
-                ViewModelProviders.of(this).get(ProfileViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+        RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
+        List<Usuario> usuarios = new ArrayList<>();
+        usuarios.add(new Usuario());
+        usuarios.add(new Usuario());
+        usuarios.add(new Usuario());
+        usuarios.add(new Usuario());
+        ProfileAdapter profileAdapter = new ProfileAdapter(usuarios);
+        profilesView.setAdapter(profileAdapter);
+        profilesView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
 
         final SearchView searchView = root.findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -64,6 +74,7 @@ public class ProfileFragment extends Fragment {
                 return false;
             }
         });
+
         return root;
     }
 }

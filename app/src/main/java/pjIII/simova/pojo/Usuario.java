@@ -4,6 +4,19 @@ import java.sql.Blob;
 
 public class Usuario {
 
+	public static String idUsuarioM;
+	public static String nomeM;
+	public static String dataM;
+	public static String generoM;
+	public static int pontosM;
+	public static String telefoneM;
+	public static String senhaM;
+	public static String emailM;
+	public static String perfilM;
+	public static int idCasaM;
+	public static String token;
+	public static Blob fotoM;
+
 	private String idUsuario;
 	private String nome;
 	private String data;
@@ -14,7 +27,6 @@ public class Usuario {
 	private String email;
 	private String perfil;
 	private int idCasa;
-	public static String token;
 	private Blob foto;
 
 	public Usuario() {

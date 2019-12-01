@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import pjIII.simova.pojo.Usuario;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -27,6 +29,32 @@ public class PresentationActivity extends AppCompatActivity {
     public static String ip = "35.247.234.136/hometasks/api/v1";
     private String baseUrl;
     private ProgressBar progressBar;
+
+    private void setUser(){
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                Service service = new Service();
+                return service.getUser();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (true) {
+                    progressBar.setVisibility(GONE);
+                    Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
+                    goToMainActivity();
+                }
+                else{
+                    progressBar.setVisibility(GONE);
+                    Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        task.execute();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +88,13 @@ public class PresentationActivity extends AppCompatActivity {
                         @Override
                         protected void onPostExecute(String result){
                             super.onPostExecute(result);
-                            if (result == "true"){
-                                progressBar.setVisibility(GONE);
-                                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
-                                goToMainActivity();
+                            if (result == "true") {
+                                setUser();
                             }
-                            else if(result == "false"){
+                            else if (result == "false"){
                                 progressBar.setVisibility(GONE);
                                 Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
-                            }
-                            else {
+                            }else{
                                 progressBar.setVisibility(GONE);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                             }
