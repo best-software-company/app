@@ -22,7 +22,7 @@ public class Service{
 
     private static String baseUrl = "http://35.247.234.136/hometasks/api/v1/";
     private static String token;
-    private String error;
+    public static String id;
 
     public Service() {
         // This is important. The application may break without this line.
@@ -95,6 +95,7 @@ public class Service{
                 JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
                 token = jsonObject.getString("token");
                 Log.i("TOKEN", token);
+                id = idUsuario;
                 return "true";
             }
             if (connection.getResponseCode() == 401 || connection.getResponseCode() == 403) {
@@ -217,7 +218,7 @@ public class Service{
     public Usuario[] getUsers(String login) {
         try {
 
-            String path = "users/".concat(login);
+            String path = "users/list/".concat(login);
             HttpURLConnection connection = prepareCon(path,"GET");
 
             connection.connect();
@@ -269,8 +270,32 @@ public class Service{
         return null;
     }
 
+    public Usuario getUser(String login) {
+        try {
+            HttpURLConnection connection;
+            if (login == null)
+                connection = prepareCon("users/".concat(id),"GET");
+            else
+                connection = prepareCon("users/".concat(login),"GET");
 
-    public boolean getUser() {
-        return true;
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 200) {
+                Gson gson = new Gson();
+                Usuario usuario = gson.fromJson(getJson(connection.getInputStream()), Usuario.class);
+                return usuario;
+
+            }
+            if (connection.getResponseCode() == 404) {
+                return null;
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -27,18 +27,30 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        final List<Usuario> usuarios = new ArrayList<>();
 
-
-        RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
-        List<Usuario> usuarios = new ArrayList<>();
-        usuarios.add(new Usuario());
-        usuarios.add(new Usuario());
-        usuarios.add(new Usuario());
-        usuarios.add(new Usuario());
-        ProfileAdapter profileAdapter = new ProfileAdapter(usuarios);
+        final RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
+        final ProfileAdapter profileAdapter = new ProfileAdapter(usuarios);
         profilesView.setAdapter(profileAdapter);
-        profilesView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+        profilesView.setLayoutManager(linearLayoutManager);
 
+        AsyncTask<Void, Void, Usuario> task = new AsyncTask<Void, Void, Usuario>() {
+            @Override
+            protected Usuario doInBackground(Void... voids) {
+                Service service1 = new Service();
+                Usuario user = service1.getUser(null);
+                return user;
+            }
+            protected void onPostExecute(Usuario result){
+                usuarios.add(result);
+                profileAdapter.notifyDataSetChanged();
+
+            }
+
+        };
+
+        task.execute();
 
         final SearchView searchView = root.findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -49,17 +61,24 @@ public class ProfileFragment extends Fragment {
                     @Override
                     protected Usuario[] doInBackground(Void... voids) {
                         Service service1 = new Service();
-                        Usuario[] users = service1.getUsers(input);
+                        Usuario user = service1.getUser(input);
+                        Usuario[] users = new Usuario[1];
+                        if(user != null){
+                            users[0] = user;
+                        }else{
+                            users = service1.getUsers(input);
+                        }
                         return users;
                     }
                     @Override
                     protected void onPostExecute(Usuario[] result){
                         super.onPostExecute(result);
-                        if (result != null){
-                            Log.i("RESUlT","true");
-                        }else {
-                            Log.i("RESUlT","false");
-                        }
+                            profilesView.removeAllViews();
+                            usuarios.clear();
+                            for (Usuario u : result){
+                                usuarios.add(u);
+                                System.out.println(u);
+                            }
                     }
                 };
 

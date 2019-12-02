@@ -30,31 +30,6 @@ public class PresentationActivity extends AppCompatActivity {
     private String baseUrl;
     private ProgressBar progressBar;
 
-    private void setUser(){
-        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Service service = new Service();
-                return service.getUser();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (true) {
-                    progressBar.setVisibility(GONE);
-                    Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
-                    goToMainActivity();
-                }
-                else{
-                    progressBar.setVisibility(GONE);
-                    Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-
-        task.execute();
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,21 +56,21 @@ public class PresentationActivity extends AppCompatActivity {
                     AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
                         @Override
                         protected String doInBackground(Void... voids) {
-                            Service service1 = new Service();
-                            String result = service1.authUser(username,password);
+                            Service service = new Service();
+                            String result = service.authUser(username,password);
                             return result;
                         }
                         @Override
                         protected void onPostExecute(String result){
                             super.onPostExecute(result);
+                            progressBar.setVisibility(GONE);
                             if (result == "true") {
-                                setUser();
+                                Toast.makeText(getApplicationContext(), "Bem vindo!.", Toast.LENGTH_LONG).show();
+                                goToMainActivity();
                             }
                             else if (result == "false"){
-                                progressBar.setVisibility(GONE);
                                 Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
                             }else{
-                                progressBar.setVisibility(GONE);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                             }
                         }

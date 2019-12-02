@@ -1,5 +1,6 @@
 package pjIII.simova.ui;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,5 +20,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         image = itemView.findViewById(R.id.foto);
         name = itemView.findViewById(R.id.nome);
         description = itemView.findViewById(R.id.descricao);
+
     }
 }
