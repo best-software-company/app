@@ -17,10 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".RegisterHouseActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_perfil"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".PresentationActivity"
             android:screenOrientation="portrait">
