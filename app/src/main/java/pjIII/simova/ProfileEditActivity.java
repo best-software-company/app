@@ -35,13 +35,11 @@ public class ProfileEditActivity extends AppCompatActivity {
         final RadioButton mOutro;
 
         final Usuario usuario = (Usuario) this.getIntent().getSerializableExtra("User");
-        System.out.println("DEPOIS " + usuario.toString());
-        mUser = (EditText) findViewById(R.id.editUser);
-        mUser.setText(usuario.getIdUsuario());
 
-        mSenha = (EditText) findViewById(R.id.editPassword);
-        mSenha.setText(usuario.getSenha());
-        System.out.println(usuario.getSenha());
+        findViewById(R.id.editUser).setVisibility(View.GONE);
+        findViewById(R.id.User).setVisibility(View.GONE);
+        findViewById(R.id.editPassword).setVisibility(View.GONE);
+        findViewById(R.id.Senha).setVisibility(View.GONE);
 
         mName = (EditText) findViewById(R.id.editName);
         mName.setText(usuario.getNome());
@@ -70,32 +68,6 @@ public class ProfileEditActivity extends AppCompatActivity {
         mRegistro = (Button) findViewById(R.id.buttonRegistrar);
         mRegistro.setText("Atualizar");
 
-        mFeminino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mFeminino.isChecked()) {
-                    mGender = "Feminino";
-                }
-            }
-
-        });
-        mMasculino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mMasculino.isChecked()) {
-                    mGender = "Masculino";
-                }
-            }
-        });
-
-        mOutro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mMasculino.isChecked()) {
-                    mGender = "Outro";
-                }
-            }
-        });
 
         mRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +78,17 @@ public class ProfileEditActivity extends AppCompatActivity {
                 usuario.setTelefone(mPhone.getText().toString());
                 usuario.setEmail(mEmail.getText().toString());
                 usuario.setData(mNascimento.getText().toString());
+                if(mFeminino.isChecked()) {
+                    mGender = "Feminino";
+                }
+                if(mMasculino.isChecked()) {
+                    mGender = "Masculino";
+                }
+                if(mOutro.isChecked()) {
+                    mGender = "Outro";
+                }
                 usuario.setGenero(mGender);
-
+                System.out.println("LAALAL  " + usuario.toString());
                 AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
                     @Override
                     protected String doInBackground(Void... voids) {
@@ -123,7 +104,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                             finish();
                         }
                         else if (s == "false"){
-                            Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Erro", Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                         }

@@ -346,7 +346,7 @@ public class Service{
             Log.i("STATUS", String.valueOf(connection.getResponseCode()));
             Log.i("MSG", connection.getResponseMessage());
 
-            if (connection.getResponseCode() == 201) {
+            if (connection.getResponseCode() == 204) {
                 return "true";
             }
             if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
