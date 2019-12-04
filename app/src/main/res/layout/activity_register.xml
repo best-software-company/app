@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@id/id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,23 +17,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/Registro"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:text="Registrar-se"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                />
-
-            <TextView
                 android:id="@+id/User"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginRight="50dp"
                 android:text="Usuario" />
 
@@ -43,8 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Username"
-                android:inputType="text" />
+                android:inputType="text"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/Senha"
@@ -52,7 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:text="Senha" />
+                android:text="Senha"
+                />
 
             <EditText
                 android:id="@+id/editPassword"
@@ -60,8 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/nome"
@@ -77,8 +68,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Full name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/telefone"
@@ -86,8 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="@android:string/emptyPhoneNumber"
-                android:text="phone" />
+                android:text="Telefone" />
 
             <EditText
                 android:id="@+id/editTelefone"
@@ -95,8 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="@android:string/emptyPhoneNumber"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/login"
@@ -112,8 +104,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:hint="Email"
-                android:inputType="textWebEmailAddress|textEmailAddress" />
+                android:inputType="textWebEmailAddress|textEmailAddress"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/data"
@@ -121,7 +114,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:text="Data de nascimento" />
+                android:text="Data de nascimento"
+                android:backgroundTint="#4285F4"
+                />
 
             <EditText
                 android:id="@+id/editData"
@@ -130,7 +125,9 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:ems="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:backgroundTint="#4285F4"
+                />
 
             <TextView
                 android:id="@+id/genero"
@@ -140,53 +137,52 @@
                 android:layout_marginRight="50dp"
                 android:text="Genero" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/checkBoxF"
-                    android:layout_width="29dp"
-                    android:layout_height="19dp"
-                    android:layout_weight="0"
-                    android:text="RadioButton" />
-
-                <CheckedTextView
-                    android:id="@+id/checkedTextViewfeminino"
-                    android:layout_width="179dp"
+                    android:id="@+id/masculino"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="Masculino" />
+
+                <RadioButton
+                    android:id="@+id/feminino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:text="Feminino" />
 
                 <RadioButton
-                    android:id="@+id/checkBoxM"
-                    android:layout_width="29dp"
-                    android:layout_height="19dp"
-                    android:layout_weight="0"
-                    android:text="RadioButton" />
-
-                <CheckedTextView
-                    android:id="@+id/checkedTextViewMasculino"
-                    android:layout_width="match_parent"
+                    android:id="@+id/outro"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Masculino" />
-            </LinearLayout>
+                    android:layout_marginRight="10dp"
+                    android:text="Outro" />
+            </RadioGroup>
+
             <Button
                 android:id="@+id/buttonRegistrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:background="#4285F4"
                 android:ems="10"
                 android:padding="8dp"
                 android:text="REGISTRAR-SE"
                 android:textAlignment="center"
+                android:textColor="#FAFAFA"
                 android:textStyle="bold"
+
                 />
 
 

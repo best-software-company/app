@@ -57,6 +57,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder>{
 
                     Intent intent = new Intent(context, ProfileEditActivity.class);
                     intent.putExtra("User",usuario);
+                    System.out.println("ANTES " + usuario.toString());
                     context.startActivity(intent);
 
 

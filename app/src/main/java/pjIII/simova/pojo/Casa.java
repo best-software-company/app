@@ -1,8 +1,9 @@
 package pjIII.simova.pojo;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
-public class Casa {
+public class Casa implements Serializable {
 
 	private int idCasa;
 	private String nome;

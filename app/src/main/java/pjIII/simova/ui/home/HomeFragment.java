@@ -28,18 +28,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
 
         RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
 
 
-        List<Casa> casas = new ArrayList<>();
-        casas.add(new Casa());
-        casas.add(new Casa());
-        casas.add(new Casa());
-        HomeAdapter homeAdapter = new HomeAdapter(casas);
-        Log.i("homeAdapter",Boolean.toString(homeAdapter == null));
+        final List<Casa> casas = new ArrayList<>();
+
+        final HomeAdapter homeAdapter = new HomeAdapter(casas);
 
         profilesView.setAdapter(homeAdapter);
         profilesView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -47,25 +44,7 @@ public class HomeFragment extends Fragment {
 
         final String id = "a";
 
-        AsyncTask<Void, Void, Casa[]> task = new AsyncTask<Void, Void, Casa[]>() {
-            @Override
-            protected Casa[] doInBackground(Void... voids) {
-                Service service1 = new Service();
-                Casa[] houses = service1.getHouses(id);
-                return houses;
-            }
-            @Override
-            protected void onPostExecute(Casa[] result){
-                super.onPostExecute(result);
-                if (result != null){
-                    Log.i("RESUlT",Integer.toString(result.length));
-                }else {
-                    Log.i("RESUlT","false");
-                }
-            }
-        };
 
-        task.execute();
 
         final SearchView searchView = root.findViewById(R.id.search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -101,9 +80,6 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-
-
-
         return root;
     }
 }

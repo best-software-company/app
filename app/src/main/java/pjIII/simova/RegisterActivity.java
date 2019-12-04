@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 //RegistroActivity.java
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final RadioButton mFeminino;
         final RadioButton mMasculino;
+        final RadioButton mOutro;
         final Usuario newUser = new Usuario();
 
         mUser = (EditText) findViewById(R.id.editUser);
@@ -37,15 +39,16 @@ public class RegisterActivity extends AppCompatActivity {
         mPhone = (EditText) findViewById(R.id.editTelefone);
         mEmail = (EditText) findViewById(R.id.editEmail);
         mNascimento = (EditText) findViewById(R.id.editData);
-        mFeminino = (RadioButton) findViewById(R.id.checkBoxF);
-        mMasculino = (RadioButton) findViewById(R.id.checkBoxM);
+        mFeminino = (RadioButton) findViewById(R.id.feminino);
+        mMasculino = (RadioButton) findViewById(R.id.masculino);
+        mOutro = (RadioButton) findViewById(R.id.outro);
         mRegistro = (Button) findViewById(R.id.buttonRegistrar);
 
         mFeminino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mFeminino.isChecked()) {
-                    mGender = "feminino";
+                    mGender = "Feminino";
                 }
             }
 
@@ -54,7 +57,16 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mMasculino.isChecked()) {
-                    mGender = "masculino";
+                    mGender = "Masculino";
+                }
+            }
+        });
+
+        mOutro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mMasculino.isChecked()) {
+                    mGender = "Outro";
                 }
             }
         });
@@ -73,54 +85,33 @@ public class RegisterActivity extends AppCompatActivity {
                 newUser.setPontos(0);
                 newUser.setPerfil("");
 
-                Service service = new Service();
-                AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(service,newUser);
-                execute.execute();
+                AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+                    @Override
+                    protected String doInBackground(Void... voids) {
+                        Service service = new Service();
+                        return service.registerUser(newUser);
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if (s == "true") {
+                            Toast.makeText(getApplicationContext(), "Usuário Cadastrado", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        else if (s == "false"){
+                            Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+
+                task.execute();
 
             }
         });
 
     }
 
-    private class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
-
-        private Service service;
-        private String isValidCredentials;
-        private Usuario user;
-        /**
-         * Overload the constructor to pass objects to this class.
-         */
-        public ExecuteNetworkOperation(Service service, Usuario user) {
-            this.service = service;
-            this.user = user;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                service.registerUser(user);
-                //isValidCredentials = service.authUser(username, password);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
-            // Register Success
-            /*if (isValidCredentials == "true"){
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
-                goToTasksActivity();
-            }else {// Login Failure
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
-            }*/
-        }
-
-
-    }
 }

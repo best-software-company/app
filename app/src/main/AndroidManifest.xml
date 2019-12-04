@@ -17,28 +17,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegisterHouseActivity">
-        </activity>
+        <activity android:name=".HouseEditActivity"></activity>
+        <activity android:name=".RegisterHouseActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_perfil"
-            android:theme="@style/NoActionBar">
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/NoActionBar">
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".ProfileEditActivity"
-            android:theme="@style/NoActionBar">
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".PresentationActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

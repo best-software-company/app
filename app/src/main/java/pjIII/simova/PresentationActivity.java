@@ -63,11 +63,11 @@ public class PresentationActivity extends AppCompatActivity {
                             super.onPostExecute(result);
                             progressBar.setVisibility(GONE);
                             if (result == "true") {
-                                Toast.makeText(getApplicationContext(), "Bem vindo!.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
                                 goToMainActivity();
                             }
                             else if (result == "false"){
-                                Toast.makeText(getApplicationContext(), "Falha no login.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                             }

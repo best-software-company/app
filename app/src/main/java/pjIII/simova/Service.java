@@ -128,7 +128,7 @@ public class Service{
             Log.i("STATUS", String.valueOf(connection.getResponseCode()));
             Log.i("MSG", connection.getResponseMessage());
 
-            if (connection.getResponseCode() == 200) {
+            if (connection.getResponseCode() == 201) {
                 return "true";
             }
             if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
@@ -270,6 +270,33 @@ public class Service{
         return null;
     }
 
+    public Casa[] getHouse(Integer id) {
+        try {
+
+            String path = "home/".concat(id.toString());
+            HttpURLConnection connection = prepareCon(path,"GET");
+
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 200) {
+                Gson gson = new Gson();
+                Casa[] houses = gson.fromJson(getJson(connection.getInputStream()), Casa[].class);
+                return houses;
+
+            }
+            if (connection.getResponseCode() == 404) {
+                return null;
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Usuario getUser(String login) {
         try {
             HttpURLConnection connection;
@@ -297,5 +324,39 @@ public class Service{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String updateUser(Usuario usuario) {
+        try {
+            HttpURLConnection connection = prepareCon("users/","PUT");
+
+            Gson gson = new Gson();
+            String usuarioString = gson.toJson(usuario);
+
+            Log.i("JSON", usuarioString);
+
+            DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+            os.writeBytes(usuarioString);
+
+            os.flush();
+            os.close();
+
+            connection.connect();
+
+            Log.i("STATUS", String.valueOf(connection.getResponseCode()));
+            Log.i("MSG", connection.getResponseMessage());
+
+            if (connection.getResponseCode() == 201) {
+                return "true";
+            }
+            if (connection.getResponseCode() == 400 || connection.getResponseCode() == 404) {
+                JSONObject jsonObject = new JSONObject(getJson(connection.getInputStream()));
+                return jsonObject.getString("error");
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "false";
     }
 }

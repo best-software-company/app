@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
 //RegistroActivity.java
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,36 +16,65 @@ import java.io.Serializable;
 import pjIII.simova.pojo.Usuario;
 
 public class ProfileEditActivity extends AppCompatActivity {
+    private EditText mUser;
+    private EditText mSenha;
     private EditText mName;
-    private EditText mData;
-    private EditText mDescricao;
-    private TextView mPontuacao;
+    private EditText mPhone;
+    private EditText mEmail;
+    private EditText mNascimento;
     private String mGender;
-    private Button mEditar;
+    private Button mRegistro;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_register);
         super.onCreate(savedInstanceState);
-        Serializable user = getIntent().getSerializableExtra("User");
         final RadioButton mFeminino;
         final RadioButton mMasculino;
-        final Usuario newUser = new Usuario();
+        final RadioButton mOutro;
+
+        final Usuario usuario = (Usuario) this.getIntent().getSerializableExtra("User");
+        System.out.println("DEPOIS " + usuario.toString());
+        mUser = (EditText) findViewById(R.id.editUser);
+        mUser.setText(usuario.getIdUsuario());
+
+        mSenha = (EditText) findViewById(R.id.editPassword);
+        mSenha.setText(usuario.getSenha());
+        System.out.println(usuario.getSenha());
 
         mName = (EditText) findViewById(R.id.editName);
-        mData = (EditText) findViewById(R.id.editData);
-        mDescricao = (EditText) findViewById(R.id.editDescrição);
-        mPontuacao = (TextView) findViewById(R.id.pontos);
-        mFeminino = (RadioButton) findViewById(R.id.radioF);
-        mMasculino = (RadioButton) findViewById(R.id.radioM);
-        mEditar = (Button) findViewById(R.id.buttonSalvar);
+        mName.setText(usuario.getNome());
+
+        mPhone = (EditText) findViewById(R.id.editTelefone);
+        mPhone.setText(usuario.getTelefone());
+
+        mEmail = (EditText) findViewById(R.id.editEmail);
+        mEmail.setText(usuario.getEmail());
+
+        mNascimento = (EditText) findViewById(R.id.editData);
+        mNascimento.setText(usuario.getData());
+
+        mFeminino = (RadioButton) findViewById(R.id.feminino);
+        mMasculino = (RadioButton) findViewById(R.id.masculino);
+        mOutro = (RadioButton) findViewById(R.id.outro);
+
+        if(usuario.getGenero() == "Feminino")
+            mFeminino.setChecked(true);
+
+        else if(usuario.getGenero() == "Masculino")
+            mMasculino.setChecked(true);
+        else
+            mOutro.setChecked(true);
+
+        mRegistro = (Button) findViewById(R.id.buttonRegistrar);
+        mRegistro.setText("Atualizar");
 
         mFeminino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mFeminino.isChecked()) {
-                    mGender = "feminino";
+                    mGender = "Feminino";
                 }
             }
 
@@ -54,73 +83,58 @@ public class ProfileEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mMasculino.isChecked()) {
-                    mGender = "masculino";
+                    mGender = "Masculino";
                 }
             }
         });
 
-        mEditar.setOnClickListener(new View.OnClickListener() {
+        mOutro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* newUser.setIdUsuario(mUser.getText().toString());
-                newUser.setSenha(mSenha.getText().toString());
-                newUser.setNome(mName.getText().toString());
-                newUser.setTelefone(mPhone.getText().toString());
-                newUser.setEmail(mEmail.getText().toString());
-                newUser.setData(mNascimento.getText().toString());
-                newUser.setGenero(mGender);
-                newUser.setIdCasa(0);
-                newUser.setPontos(0);
-                newUser.setPerfil("");
+                if(mMasculino.isChecked()) {
+                    mGender = "Outro";
+                }
+            }
+        });
 
-                Service service = new Service();
-                AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(service,newUser);
-                execute.execute();*/
+        mRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usuario.setIdUsuario(mUser.getText().toString());
+                usuario.setSenha(mSenha.getText().toString());
+                usuario.setNome(mName.getText().toString());
+                usuario.setTelefone(mPhone.getText().toString());
+                usuario.setEmail(mEmail.getText().toString());
+                usuario.setData(mNascimento.getText().toString());
+                usuario.setGenero(mGender);
+
+                AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+                    @Override
+                    protected String doInBackground(Void... voids) {
+                        Service service = new Service();
+                        return service.updateUser(usuario);
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if (s == "true") {
+                            Toast.makeText(getApplicationContext(), "Usuário Cadastrado", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        else if (s == "false"){
+                            Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+
+                task.execute();
 
             }
         });
 
     }
 
-    private class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {
-
-        private Service service;
-        private String isValidCredentials;
-        private Usuario user;
-        /**
-         * Overload the constructor to pass objects to this class.
-         */
-        public ExecuteNetworkOperation(Service service, Usuario user) {
-            this.service = service;
-            this.user = user;
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                service.registerUser(user);
-                //isValidCredentials = service.authUser(username, password);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
-            // Register Success
-            /*if (isValidCredentials == "true"){
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Bem vindo!", Toast.LENGTH_LONG).show();
-                goToTasksActivity();
-            }else {// Login Failure
-                progressBar.setVisibility(GONE);
-                Toast.makeText(getApplicationContext(), "Falha no login", Toast.LENGTH_LONG).show();
-            }*/
-        }
-
-
-    }
 }
