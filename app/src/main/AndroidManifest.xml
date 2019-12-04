@@ -20,6 +20,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_perfil"
+            android:theme="@style/NoActionBar">
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
             android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".PresentationActivity"
