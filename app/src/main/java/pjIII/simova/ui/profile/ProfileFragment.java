@@ -23,13 +23,18 @@ import pjIII.simova.pojo.Usuario;
 
 public class ProfileFragment extends Fragment {
 
+    View root;
+    List<Usuario> usuarios;
+    RecyclerView profilesView;
+    ProfileAdapter profileAdapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        final List<Usuario> usuarios = new ArrayList<>();
-        final RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
-        final ProfileAdapter profileAdapter = new ProfileAdapter(usuarios,this.getContext());
+        root = inflater.inflate(R.layout.fragment_profile, container, false);
+        usuarios = new ArrayList<>();
+        profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
+        profileAdapter = new ProfileAdapter(usuarios,this.getContext());
         profilesView.setAdapter(profileAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         profilesView.setLayoutManager(linearLayoutManager);
@@ -94,5 +99,31 @@ public class ProfileFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if((usuarios.size() == 1) && (usuarios.get(0).getIdUsuario().equals(Service.id))){
+            AsyncTask<Void, Void, Usuario> task = new AsyncTask<Void, Void, Usuario>() {
+                @Override
+                protected Usuario doInBackground(Void... voids) {
+                    Service service1 = new Service();
+                    Usuario user = service1.getUser(null);
+                    return user;
+                }
+                protected void onPostExecute(Usuario result){
+                    usuarios.clear();
+                    usuarios.add(result);
+                    System.out.println(result.toString());
+                    profileAdapter.notifyDataSetChanged();
+
+                }
+            };
+
+            task.execute();
+
+        }
+
     }
 }

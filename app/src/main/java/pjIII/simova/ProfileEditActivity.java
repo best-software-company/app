@@ -72,8 +72,6 @@ public class ProfileEditActivity extends AppCompatActivity {
         mRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usuario.setIdUsuario(mUser.getText().toString());
-                usuario.setSenha(mSenha.getText().toString());
                 usuario.setNome(mName.getText().toString());
                 usuario.setTelefone(mPhone.getText().toString());
                 usuario.setEmail(mEmail.getText().toString());
