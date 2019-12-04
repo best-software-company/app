@@ -1,8 +1,9 @@
 package pjIII.simova.pojo;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
-public class Usuario {
+public class Usuario implements Serializable {
 	private String idUsuario;
 	private String nome;
 	private String data;

@@ -28,9 +28,8 @@ public class ProfileFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final List<Usuario> usuarios = new ArrayList<>();
-
         final RecyclerView profilesView = (RecyclerView) root.findViewById(R.id.profile_list);
-        final ProfileAdapter profileAdapter = new ProfileAdapter(usuarios);
+        final ProfileAdapter profileAdapter = new ProfileAdapter(usuarios,this.getContext());
         profilesView.setAdapter(profileAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         profilesView.setLayoutManager(linearLayoutManager);

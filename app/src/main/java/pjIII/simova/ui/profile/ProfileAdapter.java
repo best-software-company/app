@@ -1,6 +1,8 @@
 package pjIII.simova.ui.profile;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -11,7 +13,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.InputStream;
 import java.util.List;
 
 import pjIII.simova.R;
@@ -21,9 +22,12 @@ import pjIII.simova.ui.ViewHolder;
 public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder>{
 
     private List<Usuario> users;
+    private Context context;
 
-    public ProfileAdapter(List<Usuario> users) {
+    public ProfileAdapter(List<Usuario> users, Context context) {
+
         this.users = users;
+        this.context = context;
     }
 
     @NonNull
@@ -37,7 +41,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder>{
     @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Usuario usuario = users.get(position);
+            final Usuario usuario = users.get(position);
             /*
             InputStream stream = usuario.getFoto().getBinaryStream();
             Bitmap bmp = BitmapFactory.decodeStream(stream);
@@ -51,8 +55,23 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder>{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO-> CRIAR TELA DE EDITAR USUÁRIO
-                    Log.i("CLICKOU","TRUE");
+                    //Passa para o usuario para a activity de registro
+                    /*
+                    Intent intent = new Intent(context, RegisterActivity.class);
+                    intent.putExtra("User",usuario);
+                    context.startActivity(intent);
+                     */
+
+                    /*
+                    //Recupera o usuario na activity de registro
+                    Usuario user = (Usuario) getIntent().getSerializableExtra("User");
+
+                    seta os campos com as info do usuario
+
+                    atualiza o usuario no server
+                    se deu ok, pra voltar pra tela de perfil:
+                    finish();
+                    */
                 }
             });
     }
