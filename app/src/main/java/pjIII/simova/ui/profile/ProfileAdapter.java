@@ -3,9 +3,6 @@ package pjIII.simova.ui.profile;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import pjIII.simova.ProfileEditActivity;
 import pjIII.simova.R;
 import pjIII.simova.pojo.Usuario;
 import pjIII.simova.ui.ViewHolder;
@@ -56,16 +54,15 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     //Passa para o usuario para a activity de registro
-                    /*
-                    Intent intent = new Intent(context, RegisterActivity.class);
+
+                    Intent intent = new Intent(context, ProfileEditActivity.class);
                     intent.putExtra("User",usuario);
                     context.startActivity(intent);
-                     */
 
-                    /*
+
+
                     //Recupera o usuario na activity de registro
-                    Usuario user = (Usuario) getIntent().getSerializableExtra("User");
-
+                    /*
                     seta os campos com as info do usuario
 
                     atualiza o usuario no server

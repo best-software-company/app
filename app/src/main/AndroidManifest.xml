@@ -29,6 +29,10 @@
             android:theme="@style/NoActionBar">
         </activity>
         <activity
+            android:name=".ProfileEditActivity"
+            android:theme="@style/NoActionBar">
+        </activity>
+        <activity
             android:name=".PresentationActivity"
             android:screenOrientation="portrait">
             <intent-filter>
