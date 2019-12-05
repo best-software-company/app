@@ -66,51 +66,57 @@ public class ProfileEditActivity extends AppCompatActivity {
             mOutro.setChecked(true);
 
         mRegistro = (Button) findViewById(R.id.buttonRegistrar);
-        mRegistro.setText("Atualizar");
+        if(usuario.getIdUsuario().equals(Service.id))
+            mRegistro.setText("Atualizar");
+        else
+            mRegistro.setText("Convidar");
 
 
         mRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usuario.setNome(mName.getText().toString());
-                usuario.setTelefone(mPhone.getText().toString());
-                usuario.setEmail(mEmail.getText().toString());
-                usuario.setData(mNascimento.getText().toString());
-                if(mFeminino.isChecked()) {
-                    mGender = "Feminino";
-                }
-                if(mMasculino.isChecked()) {
-                    mGender = "Masculino";
-                }
-                if(mOutro.isChecked()) {
-                    mGender = "Outro";
-                }
-                usuario.setGenero(mGender);
-                System.out.println("LAALAL  " + usuario.toString());
-                AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
-                    @Override
-                    protected String doInBackground(Void... voids) {
-                        Service service = new Service();
-                        return service.updateUser(usuario);
+                if(mRegistro.getText().equals("Atualizar")){
+                    usuario.setNome(mName.getText().toString());
+                    usuario.setTelefone(mPhone.getText().toString());
+                    usuario.setEmail(mEmail.getText().toString());
+                    usuario.setData(mNascimento.getText().toString());
+                    if(mFeminino.isChecked()) {
+                        mGender = "Feminino";
                     }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
-                        if (s == "true") {
-                            Toast.makeText(getApplicationContext(), "Usuário Cadastrado", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                        else if (s == "false"){
-                            Toast.makeText(getApplicationContext(), "Erro", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-                        }
+                    if(mMasculino.isChecked()) {
+                        mGender = "Masculino";
                     }
-                };
+                    if(mOutro.isChecked()) {
+                        mGender = "Outro";
+                    }
+                    usuario.setGenero(mGender);
+                    AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+                        @Override
+                        protected String doInBackground(Void... voids) {
+                            Service service = new Service();
+                            return service.updateUser(usuario);
+                        }
 
-                task.execute();
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            if (s == "true") {
+                                Toast.makeText(getApplicationContext(), "Usu    ário Atualizado", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                            else if (s == "false"){
+                                Toast.makeText(getApplicationContext(), "Erro", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    };
 
+                    task.execute();
+                }
+                else{
+                    System.out.println("Convidando");
+                }
             }
         });
 

@@ -80,6 +80,7 @@ public class ProfileFragment extends Fragment {
                             profilesView.removeAllViews();
                             usuarios.clear();
                             for (Usuario u : result){
+                                if(!u.getIdUsuario().equals(Service.id))
                                 usuarios.add(u);
                                 System.out.println(u);
                             }
